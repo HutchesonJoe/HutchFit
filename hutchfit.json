@@ -1,0 +1,36 @@
+{
+  "clients": [
+    {
+      "Hutch": {
+        "name": "Hutch",
+        "id": 1,
+        "age": 47,
+        "height": 6,
+        "weight": 178,
+        "challenges": "Torn acl on right knee",
+        "days": 4,
+        "willWorkOut": true,
+        "equipment": "Bodyweight",
+        "movements": {
+          "push-up": "push-up",
+          "air-squat": "air-squat"
+        }
+      },
+      "Jenn": {
+        "name": "Jenn",
+        "id": 2,
+        "age": 47,
+        "height": 5.5,
+        "weight": 113,
+        "challenges": "low back issues, bulbing disc, shoulder pain on rotation",
+        "days": 3,
+        "willWorkOut": true,
+        "equipment": "Bodyweight",
+        "movements": {
+          "push-up": "push-up",
+          "air-squat": "air-squat"
+        }
+      }
+    }
+  ]
+}
