@@ -114,9 +114,8 @@ function showRoster(){
   )
     .then(response => {return response.json()})
     .then(data => {const currentRoster = data;
-      debugger
+      
       let rosterArray = Object.values(currentRoster);
-      debugger
       let rosterTd = document.getElementById("create-workout-roster");
       let roster = document.createElement("ul");
       for (let client of rosterArray){
@@ -186,7 +185,7 @@ function createWorkout(e){
   }
   )
     .then(response => {return response.json()})
-    .then(data => {const currentRoster = Object.values(data[0]);
+    .then(data => {const currentRoster = Object.values(data);
       
       for (const client of currentRoster){
         if (client.name === e.target.id){
@@ -198,8 +197,32 @@ function createWorkout(e){
 }
 
 function createClientCard(thisClient){
+  const exercisesByCategoryArray = []
+  const getExercises = fetch(`http://localhost:3000/exercises`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+  )
+    .then(response => {return response.json()})
+    .then(data => {const exerciseLists = Object.values(data[0]);
+      
+      for (const category of exerciseLists){
+        exercisesByCategoryArray.push(category)
+      }
+        
+    })
+  const cardioMin = exercisesByCategoryArray[0];
+  const cardioMed = exercisesByCategoryArray[1];
+  const cardioMax = exercisesByCategoryArray[2];
+  const UpperPush = exercisesByCategoryArray[3];
+  const UpperPull = exercisesByCategoryArray[4];
+  const squatLunge = exercisesByCategoryArray[5];
+  const hingeDeadlift = exercisesByCategoryArray[6];
+  const core = exercisesByCategoryArray[7];
+
   document.getElementById("create-workout").remove();
-  console.log(thisClient)
   const name = thisClient.name
   const age = thisClient.age
   const height = thisClient.height
@@ -217,7 +240,6 @@ function createClientCard(thisClient){
   
   let createWorkoutTd = document.getElementById("create-workout-roster");
   let roster = document.getElementById("roster");
-  console.log(roster, "roster")
   let newClient = document.getElementById("new-client-form");
   newClient.remove();
   roster.remove();
@@ -315,7 +337,4 @@ function createClientCard(thisClient){
   chooseActivity.append(cardioClimbers)
   chooseActivity.append(cardioClimbersLabel)
  
-
-  
-  console.log(thisClient)
 }
