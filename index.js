@@ -114,7 +114,9 @@ function showRoster(){
   )
     .then(response => {return response.json()})
     .then(data => {const currentRoster = data;
-      let rosterArray = Object.values(currentRoster[0]);
+      debugger
+      let rosterArray = Object.values(currentRoster);
+      debugger
       let rosterTd = document.getElementById("create-workout-roster");
       let roster = document.createElement("ul");
       for (let client of rosterArray){
@@ -150,15 +152,14 @@ function submitClient(e){
   const workOutOnOwn = e.target[6].value
   const availEquip  = e.target[7].value
   
-  fetch(`http://localhost:3000/clients`, {
+  fetch('http://localhost:3000/clients', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body:JSON.stringify({
-      name : {
       "name" : name,
-      "id" : 4,
+      //"id" : 4,
       "height" : height,
       "weight" : weight,
       "age" : age,
@@ -166,14 +167,15 @@ function submitClient(e){
       "days" : daysPerWeek,
       "willWorkOut" : workOutOnOwn,
       "equipment" : availEquip
-      }
+      })
         
     })
-  }
-  )
-    // .then(response => {return response.json()})
+        // .then(response => {return response.json()})
     // .then(data => {console.log("submited")})
-}
+
+  }
+  
+
 
 function createWorkout(e){
   let getInfo = fetch(`http://localhost:3000/clients`, {
