@@ -173,7 +173,7 @@ function showRoster(){
   
 
 function clientSummary(e){
-  const clientId = e.target.id;
+  let clientId = parseInt(e.target.id);
     fetch(`http://localhost:3000/clients`,{
       method: 'GET',
       headers:  {
@@ -182,41 +182,41 @@ function clientSummary(e){
     })
     .then(response => response.json())
     .then(data => {const clientArray = data;
-      for (const client of clientArray){
-        if (clientId = client.id){
-
-        }
+    let client = clientArray.find(element => element.id === clientId);
+    const name = client.name
+    const age = client.age
+    const height = client.height
+    const weight = client.weight
+    const challenges = client.challenges
+    const days = client.days
+    const equipment = client.equipment
+    const willWorkOut = client.willWorkOut
+      if (willWorkOut === true){
+      let willWorkOutResp = `${name} will work out on their own.`
+      } else {
+        let willWorkOutResp = `${name} will not work out on their own.`
+  
+        } 
+        
+    let createWorkoutTd = document.getElementById("roster");
+    // let roster = document.getElementById("roster");
+    // let newClient = document.getElementById("new-client-form");
+  
+    let ThisClientSummary = document.createElement("div");
+    ThisClientSummary.id = name;
+    ThisClientSummary.className = "client-summary"
+    ThisClientSummary.style.color = "blue";
+    ThisClientSummary.style.background = "white"
+    ThisClientSummary.textContent = `${name} is ${age} years old, ${height} feet, ${weight} lbs. Current goals and challenges are: ${challenges}. ${name} will plan to work out ${days} days a week, with access to ${equipment}.`
+    createWorkoutTd.append(ThisClientSummary);
+    let summaries = document.getElementsByClassName("client-summary");
+    for (let summary of summaries){
+      if (summary.id !== name){
+        summary.remove()
       }
+    }
     })
 
-  const name = client.name
-  const age = client.age
-  const height = client.height
-  const weight = client.weight
-  const challenges = client.challenges
-  const days = client.days
-  const equipment = client.equipment
-  const willWorkOut = client.willWorkOut
-    if (willWorkOut === true){
-    let willWorkOutResp = `${name} will work out on their own.`
-    } else {
-      let willWorkOutResp = `${name} will not work out on their own.`
 
-      } 
-      
-  let createWorkoutTd = document.getElementById("roster");
-  let roster = document.getElementById("roster");
-  let newClient = document.getElementById("new-client-form");
-  const clientCard = document.createElement("table");
-  clientCard.class = "client-card"
-  let clientSummary = document.createElement("th")
-  clientCard.id = name
-  clientSummary.style.color = "white";
-  clientCard.style.padding = "10px"
-  clientSummary.textContent = `${name} is ${age} years old, ${height} feet, ${weight} lbs. Current goals and challenges are: ${challenges}. ${name} will plan to work out ${days} days a week, with access to ${equipment}.`
-  // createWorkoutTd.append(clientCard);
-  // clientCard.append(clientSummary)
-
-  let homeBox = document.getElementById("home-box");
   
 }
