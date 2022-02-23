@@ -2,8 +2,8 @@
 let addNewClientButton = document.getElementById("add-client");
 addNewClientButton.addEventListener("click", newClientHandler);
 
-let createWorkoutButton = document.getElementById("create-workout");
-createWorkoutButton.addEventListener("click", showRoster)
+let getRoster = document.getElementById("show-roster");
+getRoster.addEventListener("click", showRoster)
 
 function newClientHandler(){
   let button = document.getElementById("add-client");
@@ -98,44 +98,7 @@ function newClientHandler(){
   equipmentInput.append(equipmentOptionChoice2);
   equipmentInput.append(equipmentOptionChoice3);
   newForm.append(submit)
-
-
-
 }
-
-function showRoster(){
-  clientNames = []
-  let getClients = fetch("http://localhost:3000/clients",{
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }
-  )
-    .then(response => {return response.json()})
-    .then(data => {const currentRoster = data;
-      
-      let rosterArray = Object.values(currentRoster);
-      let rosterTd = document.getElementById("create-workout-roster");
-      let roster = document.createElement("ul");
-      for (let client of rosterArray){
-        let thisClient = document.createElement("li");
-        thisClient.textContent = client.name;
-        thisClient.id = client.name;
-        thisClient.className = "roster"
-        thisClient.addEventListener("click", createWorkout);
-        
-        roster.id = "roster"
-        rosterTd.append(roster)
-        roster.append(thisClient)
-
-      }
-    });
-  
- const newForm = document.getElementById("new-form");
-//  if (newForm === newForm){
-//  newForm.remove()};
-} 
 
 function submitClient(e){
   //remove this later
@@ -173,168 +136,87 @@ function submitClient(e){
     // .then(data => {console.log("submited")})
 
   }
+
+function showRoster(){
+  //clientNames = []
+  document.getElementById("show-roster").removeEventListener("click", showRoster)
+  let getClients = fetch("http://localhost:3000/clients",{
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+  )
+    .then(response => {return response.json()})
+    .then(data => {const currentRoster = data;
+      let rosterArray = Object.values(currentRoster);
+      let rosterTd = document.getElementById("roster");
+      let roster = document.createElement("div");
+      for (let client of rosterArray){
+        let thisClient = document.createElement("button");
+        thisClient.className = "roster-button"
+        thisClient.textContent = client.name;
+        thisClient.id = client.id;
+        thisClient.className = "roster"
+        thisClient.addEventListener("click", clientSummary);
+        
+        roster.id = "roster"
+        rosterTd.append(roster)
+        roster.append(thisClient)
+
+      }
+    });
+  
+} 
+
+
   
 
+function clientSummary(e){
+  const clientId = e.target.id;
+    fetch(`http://localhost:3000/clients`,{
+      method: 'GET',
+      headers:  {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {const clientArray = data;
+      for (const client of clientArray){
+        if (clientId = client.id){
 
-function createWorkout(e){
-  let getInfo = fetch(`http://localhost:3000/clients`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }
-  )
-    .then(response => {return response.json()})
-    .then(data => {const currentRoster = Object.values(data);
-      
-      for (const client of currentRoster){
-        if (client.name === e.target.id){
-          createClientCard(client)
         }
       }
-    
     })
-}
 
-function createClientCard(thisClient){
-  const exercisesByCategoryArray = []
-  const getExercises = fetch(`http://localhost:3000/exercises`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }
-  )
-    .then(response => {return response.json()})
-    .then(data => {const exerciseLists = Object.values(data[0]);
-      
-      for (const category of exerciseLists){
-        exercisesByCategoryArray.push(category)
-      }
-        
-    })
-  const cardioMin = exercisesByCategoryArray[0];
-  const cardioMed = exercisesByCategoryArray[1];
-  const cardioMax = exercisesByCategoryArray[2];
-  const UpperPush = exercisesByCategoryArray[3];
-  const UpperPull = exercisesByCategoryArray[4];
-  const squatLunge = exercisesByCategoryArray[5];
-  const hingeDeadlift = exercisesByCategoryArray[6];
-  const core = exercisesByCategoryArray[7];
-
-  document.getElementById("create-workout").remove();
-  const name = thisClient.name
-  const age = thisClient.age
-  const height = thisClient.height
-  const weight = thisClient.weight
-  const challenges = thisClient.challenges
-  const days = thisClient.days
-  const equipment = thisClient.equipment
-  const willWorkOut = thisClient.willWorkOut
+  const name = client.name
+  const age = client.age
+  const height = client.height
+  const weight = client.weight
+  const challenges = client.challenges
+  const days = client.days
+  const equipment = client.equipment
+  const willWorkOut = client.willWorkOut
     if (willWorkOut === true){
     let willWorkOutResp = `${name} will work out on their own.`
     } else {
       let willWorkOutResp = `${name} will not work out on their own.`
 
       } 
-  
-  let createWorkoutTd = document.getElementById("create-workout-roster");
+      
+  let createWorkoutTd = document.getElementById("roster");
   let roster = document.getElementById("roster");
   let newClient = document.getElementById("new-client-form");
-  newClient.remove();
-  roster.remove();
-  let clientCard = document.createElement("table");
+  const clientCard = document.createElement("table");
   clientCard.class = "client-card"
   let clientSummary = document.createElement("th")
   clientCard.id = name
   clientSummary.style.color = "white";
   clientCard.style.padding = "10px"
   clientSummary.textContent = `${name} is ${age} years old, ${height} feet, ${weight} lbs. Current goals and challenges are: ${challenges}. ${name} will plan to work out ${days} days a week, with access to ${equipment}.`
-  createWorkoutTd.append(clientCard);
-  clientCard.append(clientSummary)
+  // createWorkoutTd.append(clientCard);
+  // clientCard.append(clientSummary)
+
   let homeBox = document.getElementById("home-box");
-  ///Block one of the workout: the same for every client
-  let workoutBlockOneHolder = document.createElement("tr");
-  let workoutBlockOne = document.createElement("td")
-  workoutBlockOneHolder.id = "movement-prep";
-  workoutBlockOne.textContent = "Copy with general content; write out my movement prep; create a checklist."
-  clientCard.append(workoutBlockOneHolder);
-  workoutBlockOneHolder.append(workoutBlockOne)
-  ///Block two of the workout; cardio push
-  let workoutBlockTwoHolder = document.createElement("tr");
-  let workoutBlockTwo = document.createElement("td");
-  workoutBlockTwo.id = "cardio-one";
-  workoutBlockTwo.textContent = "CARDIO PUSH: Choose three of the following, perform for 30 seconds each (10 second rest), three times through. Effort level: moderate.";
-  clientCard.append(workoutBlockTwoHolder);
-  workoutBlockTwoHolder.append(workoutBlockTwo)
-  let chooseActivity = document.createElement("div");
-  chooseActivityClass = "choose-activity";
-  chooseActivityId = "choose-activity-1";
-  //adding cardio move
-  const cardioRun = document.createElement("input");
-  const cardioRunLabel = document.createElement("label");
-  cardioRun.id = "run"
-  cardioRunLabel.for = "run"
-  cardioRun.type = "checkbox"
-  cardioRun.value = "run"
-  cardioRunLabel.textContent = "High knee Run in Place"
-  workoutBlockTwo.append(chooseActivity)
-  chooseActivity.append(cardioRun)
-  chooseActivity.append(cardioRunLabel)
-  //adding cardio move
-  const cardioJumpingJacks = document.createElement("input");
-  const cardioJJLabel = document.createElement("label");
-  cardioJumpingJacks.id = "jumpingjacks"
-  cardioJJLabel.for = "jumpingjacks"
-  cardioJumpingJacks.type = "checkbox"
-  cardioJumpingJacks.value = "jumpingjacks"
-  cardioJJLabel.textContent = "Jumping Jacks"
-  workoutBlockTwo.append(chooseActivity)  
-  chooseActivity.append(cardioJumpingJacks)
-  chooseActivity.append(cardioJJLabel)
-  //adding cardio move
-  const cardioWalkouts = document.createElement("input");
-  const cardioWOLabel = document.createElement("label");
-  cardioWalkouts.id = "walkouts"
-  cardioWOLabel.for = "walkouts"
-  cardioWalkouts.type = "checkbox"
-  cardioWalkouts.value = "walkouts"
-  cardioWOLabel.textContent = "Walkouts"
-  workoutBlockTwo.append(chooseActivity)
-  chooseActivity.append(cardioWalkouts)
-  chooseActivity.append(cardioWOLabel)
-  //adding cardio move
-  const cardioSkaters = document.createElement("input");
-  const cardioSkatersLabel = document.createElement("label");
-  cardioSkaters.id = "skaters"
-  cardioSkatersLabel.for = "skaters"
-  cardioSkaters.type = "checkbox"
-  cardioSkaters.value = "skaters"
-  cardioSkatersLabel.textContent = "Skaters"
-  workoutBlockTwo.append(chooseActivity)
-  chooseActivity.append(cardioSkaters)
-  chooseActivity.append(cardioSkatersLabel)
-   //adding cardio move
-  const lateralHops = document.createElement("input");
-   const cardioLatHopsLabel = document.createElement("label");
-   lateralHops.id = "lateral-hops"
-   cardioLatHopsLabel.for = "lateral-hops"
-   lateralHops.type = "checkbox"
-   lateralHops.value = "lateral-hops"
-   cardioLatHopsLabel.textContent = "Lateral Hops"
-   workoutBlockTwo.append(chooseActivity)
-   chooseActivity.append(lateralHops)
-   chooseActivity.append(cardioLatHopsLabel)
-    //adding cardio move
-  const cardioClimbers = document.createElement("input");
-  const cardioClimbersLabel = document.createElement("label");
-  cardioClimbers.id = "climbers"
-  cardioClimbersLabel.for = "climbers"
-  cardioClimbers.type = "checkbox"
-  cardioClimbers.value = "climbrers"
-  cardioClimbersLabel.textContent = "Climbers"
-  workoutBlockTwo.append(chooseActivity)
-  chooseActivity.append(cardioClimbers)
-  chooseActivity.append(cardioClimbersLabel)
- 
+  
 }

@@ -16,7 +16,7 @@ table {
 }
 
 th{
-  border: 2px solid;
+  border: 1px solid;
 }
 
 td{
@@ -34,7 +34,7 @@ td#new-client-form{
   border: 0px;
 }
 
-td#create-workout-roster{
+td#roster{
   border:0px;
 }
 
@@ -51,9 +51,15 @@ div.client-card{
 }
 
 button{
+  vertical-align: top;
   color: rgb(255, 182, 24);
   padding: 8px;
   width: 100%;
+}
+
+.roster{
+  color: blue;
+  background-color: grey;
 }
 
 input{
