@@ -8,7 +8,7 @@
       "weight": 178,
       "challenges": "Torn acl on right knee",
       "days": 4,
-      "willWorkOut": true,
+      "willWorkOut": "Yes",
       "equipment": "Bodyweight"
     },
     {
@@ -19,10 +19,42 @@
       "weight": 113,
       "challenges": "low back issues, bulbing disc, shoulder pain on rotation",
       "days": 3,
-      "willWorkOut": true,
+      "willWorkOut": "No",
       "equipment": "Bodyweight"
-      }
-    
+    },
+    {
+      "name": "Charl",
+      "height": 6,
+      "weight": 186,
+      "age": "42",
+      "challenges": "Weak hips. ",
+      "days": "4",
+      "willWorkOut": "Yes",
+      "equipment": "Full Gym",
+      "id": 3
+    },
+    {
+      "name": "Brad",
+      "height": 6,
+      "weight": 178,
+      "age": "43",
+      "challenges": "Shoulder mobility issues.",
+      "days": "4",
+      "willWorkOut": "Yes",
+      "equipment": "Full Gym",
+      "id": 4
+    },
+    {
+      "name": "Emily",
+      "height": 5,
+      "weight": 174,
+      "age": "40",
+      "challenges": "Wrist mobility issues",
+      "days": "3",
+      "willWorkOut": "No",
+      "equipment": "Bodyweight/bands",
+      "id": 5
+    }
   ],
   "exercises": [
     {

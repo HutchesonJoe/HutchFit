@@ -1,10 +1,18 @@
 body{
   background-color:rgb(92, 171, 240);
-  color: rgb(5, 5, 112)
+  color: rgb(5, 5, 112);
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 h1 {
+  margin-top: 0%;
+  margin-bottom: 0%;
   color: rgb(255, 182, 24);
+  font-size: 75px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-style: italic;
+  background-color: aliceblue;
+  
 }
 
 h3 {
@@ -12,6 +20,7 @@ h3 {
 
 }
 table { 
+  
   background-color: rgb(95, 92, 92);
 }
 
@@ -24,6 +33,7 @@ td{
   background-color: rgb(255, 182, 24);
   padding: 8px;
   width: 50%;
+  vertical-align: top;
 }
 tr {
   border: 1px solid;
@@ -44,7 +54,9 @@ table#home-box{
   width: 100%;
 }
 
-
+div {
+  padding: 20px;
+}
 
 div.client-card{
   color: white;
@@ -57,7 +69,7 @@ button{
   width: 100%;
 }
 
-.roster{
+.roster-button{
   color: blue;
   background-color: grey;
 }
@@ -72,15 +84,14 @@ input{
 }
 
 label {
-  display: inline;
+  display: block;
   text-align: left;
 }
 
 
 
 textarea{
- 
-  padding: 12px 20px;
+  padding: 10px 10px;
   margin: 8px;
   display: inline-block;
   border: 1px solid #ccc;
@@ -89,7 +100,7 @@ textarea{
 }
 
 select{
-  width: 100%;
+  width: 80%;
   padding: 12px 20px;
   margin: 8px;
   display: inline-block;

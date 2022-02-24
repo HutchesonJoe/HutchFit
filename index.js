@@ -1,52 +1,71 @@
-//adding a new client to the roster
-let addNewClientButton = document.getElementById("add-client");
+//adding two main buttons
+function addClientButton(){
+const addNewClientButton = document.getElementById("add-client");
 addNewClientButton.addEventListener("click", newClientHandler);
+}
+addClientButton();
 
-let getRoster = document.getElementById("show-roster");
-getRoster.addEventListener("click", showRoster)
+function getRosterButton(){
+const rosterHolder = document.getElementById("roster")
+const getRosterButton = document.createElement("button");
+getRosterButton.id = "roster-button"
+getRosterButton.textContent = "Get Roster";
+getRosterButton.addEventListener("click", showRoster);
+let div = document.getElementById("client-summary");
+rosterHolder.insertBefore(getRosterButton, div);
+}
+getRosterButton();
 
+//adding a new client to the roster
 function newClientHandler(){
   let button = document.getElementById("add-client");
   button.remove()
   let formWindow = document.getElementById("new-client-form");
   let newForm = document.createElement("form");
   newForm.id = "new-form"
+
   let nameInput = document.createElement("input");
   let nameInputLabel = document.createElement("label");
   nameInputLabel.textContent = "Name"
   nameInputLabel.for = "name"
   nameInput.placeholder = "Client Name"
-  nameInput.id = "name"
+  nameInput.id = "name";
+
   let heightInput = document.createElement("input");
   let heightInputLabel = document.createElement("label");
   heightInputLabel.textContent = "Height"
   heightInput.id = "height";
   heightInputLabel.for = "height";
   heightInput.placeholder = "Height in feet (example: 6.2)";
+
   let weightInput = document.createElement("input");
   let weightInputLabel = document.createElement("label");
   weightInputLabel.textContent = "Weight";
   weightInput.id = "weight";
   weightInputLabel.for = "weight";
   weightInput.placeholder = "Weight in lbs (example: 182.4)";
+
   let ageInput = document.createElement("input");
   let ageInputLabel = document.createElement("label");
   ageInput.id = "age";
   ageInputLabel.for = "age";
   ageInputLabel.textContent = "Age";
   ageInput.placeholder = "Age";
+
   let challengesInput = document.createElement("textarea");
   let challengesInputLabel = document.createElement("label");
   challengesInputLabel.textContent = "Client-specific Challenges/Goals";
   challengesInput.id = "challenges";
   challengesInputLabel.for = "challenges";
   challengesInput.placeholder = "i.e. weak/tight hips, wants a bigger chest,lower back issues, underactive glutes, etc.";
+
   let daysInput = document.createElement("input");
   let daysInputLabel = document.createElement("label")
   daysInput.id = "days";
   daysInputLabel.for = "days";
   daysInput.placeholder = "Days";
   daysInputLabel.textContent = "How many days will this client work out?";
+
   let willWorkOutInput = document.createElement("select");
   let willWorkOutYes = document.createElement("option");
   willWorkOutYes.textContent = "Yes";
@@ -58,6 +77,7 @@ function newClientHandler(){
   willWorkOutInput.id = "will-work-out";
   willWorkOutInputLabel.for = "will-work-out"
   willWorkOutInputLabel.textContent = "Will this client work out on their own?";
+
   let equipmentInput = document.createElement("select");
   let equipmentInputLabel = document.createElement("label");
   equipmentInputLabel.textContent = "Available Equipment";
@@ -69,6 +89,7 @@ function newClientHandler(){
   equipmentOptionChoice1.textContent = "Full Gym";
   equipmentOptionChoice2.textContent = "Home gym/light equipment";
   equipmentOptionChoice3.textContent = "Bodyweight/bands";
+
   let submit = document.createElement("input");
   newForm.addEventListener("submit", submitClient)
   submit.type = "submit"
@@ -100,9 +121,9 @@ function newClientHandler(){
   newForm.append(submit)
 }
 
+//submiting the client
+
 function submitClient(e){
-  //remove this later
-  e.preventDefault()
   const name = e.target[0].value
   const rawHeight = e.target[1].value
   const height = parseInt(rawHeight)
@@ -132,14 +153,16 @@ function submitClient(e){
       })
         
     })
-        // .then(response => {return response.json()})
-    // .then(data => {console.log("submited")})
-
   }
 
+//showing roster of current clients
 function showRoster(){
-  //clientNames = []
-  document.getElementById("show-roster").removeEventListener("click", showRoster)
+  const roster = document.getElementById("roster-button");
+  roster.removeEventListener("click", showRoster);
+  roster.addEventListener("click", hideRoster);
+  roster.textContent = "";
+  roster.textContent = "Hide Roster"
+
   let getClients = fetch("http://localhost:3000/clients",{
     method: 'GET',
     headers: {
@@ -151,28 +174,38 @@ function showRoster(){
     .then(data => {const currentRoster = data;
       let rosterArray = Object.values(currentRoster);
       let rosterTd = document.getElementById("roster");
-      let roster = document.createElement("div");
+      let rosterDiv = document.createElement("div");
+      rosterDiv.id = "roster-holder"
       for (let client of rosterArray){
         let thisClient = document.createElement("button");
         thisClient.className = "roster-button"
         thisClient.textContent = client.name;
         thisClient.id = client.id;
-        thisClient.className = "roster"
+        thisClient.className = "roster-button"
         thisClient.addEventListener("click", clientSummary);
         
-        roster.id = "roster"
-        rosterTd.append(roster)
-        roster.append(thisClient)
+        
+        rosterTd.append(rosterDiv)
+        rosterDiv.append(thisClient)
 
       }
     });
   
 } 
+///hiding the roster
+function hideRoster(e){
+  e.target.remove();
+  const roster = document.getElementById("roster-holder");
+  roster.remove();
+  getRosterButton();
+  let clientSummary = document.getElementById("client-summary");
+  console.log(clientSummary)
 
+}
 
-  
-
+//creating a summary of each client
 function clientSummary(e){
+  const thisClient = e.target.textContent;
   let clientId = parseInt(e.target.id);
     fetch(`http://localhost:3000/clients`,{
       method: 'GET',
@@ -182,7 +215,13 @@ function clientSummary(e){
     })
     .then(response => response.json())
     .then(data => {const clientArray = data;
-    let client = clientArray.find(element => element.id === clientId);
+
+    //remove previous client summary
+    const client = clientArray.find(element => element.id === clientId);
+    const rosterHolder = document.getElementById("roster-holder");
+    // const summary = rosterHolder.getElementsByTagName("div");
+    // console.log(summary)
+    
     const name = client.name
     const age = client.age
     const height = client.height
@@ -191,32 +230,28 @@ function clientSummary(e){
     const days = client.days
     const equipment = client.equipment
     const willWorkOut = client.willWorkOut
-      if (willWorkOut === true){
-      let willWorkOutResp = `${name} will work out on their own.`
+    let willWorkOutResp = ""
+      if (willWorkOut === "Yes"){
+      willWorkOutResp = `${name} will work out on their own`
       } else {
-        let willWorkOutResp = `${name} will not work out on their own.`
+      willWorkOutResp = `${name} will not work out on their own`
   
         } 
-        
-    let createWorkoutTd = document.getElementById("roster");
-    // let roster = document.getElementById("roster");
-    // let newClient = document.getElementById("new-client-form");
-  
-    let ThisClientSummary = document.createElement("div");
-    ThisClientSummary.id = name;
-    ThisClientSummary.className = "client-summary"
-    ThisClientSummary.style.color = "blue";
-    ThisClientSummary.style.background = "white"
-    ThisClientSummary.textContent = `${name} is ${age} years old, ${height} feet, ${weight} lbs. Current goals and challenges are: ${challenges}. ${name} will plan to work out ${days} days a week, with access to ${equipment}.`
-    createWorkoutTd.append(ThisClientSummary);
-    let summaries = document.getElementsByClassName("client-summary");
-    for (let summary of summaries){
-      if (summary.id !== name){
-        summary.remove()
-      }
-    }
+    const roster = document.getElementById("roster");
+
+    const rosterBox = roster.getElementsByTagName("div");
+    const thisClientSummary = (rosterBox[0])
+    debugger
+    thisClientSummary.id = name;
+    thisClientSummary.className = "client-summary"
+    thisClientSummary.style.color = "blue";
+    thisClientSummary.style.background = "white";
+    thisClientSummary.textContent = "";
+    thisClientSummary.textContent = `${name} is ${age} years old, ${height} feet, ${weight} lbs. Current goals and challenges are: ${challenges}. ${name} will plan to work out ${days} days a week, with access to ${equipment}. ${willWorkOutResp}.`;
+    
+    //   if (summary[0].id === name){
+    //     debugger
+    //     thisClientSummary.remove()
+    // }
     })
-
-
-  
 }
