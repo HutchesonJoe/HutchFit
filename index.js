@@ -241,7 +241,6 @@ function clientSummary(e){
 
     const rosterBox = roster.getElementsByTagName("div");
     const thisClientSummary = (rosterBox[0])
-    debugger
     thisClientSummary.id = name;
     thisClientSummary.className = "client-summary"
     thisClientSummary.style.color = "blue";
@@ -249,9 +248,6 @@ function clientSummary(e){
     thisClientSummary.textContent = "";
     thisClientSummary.textContent = `${name} is ${age} years old, ${height} feet, ${weight} lbs. Current goals and challenges are: ${challenges}. ${name} will plan to work out ${days} days a week, with access to ${equipment}. ${willWorkOutResp}.`;
     
-    //   if (summary[0].id === name){
-    //     debugger
-    //     thisClientSummary.remove()
-    // }
+  
     })
 }
