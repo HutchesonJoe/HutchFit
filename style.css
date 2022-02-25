@@ -55,23 +55,24 @@ table#home-box{
 }
 
 div {
-  padding: 20px;
+  margin: 5px;
 }
 
-div.client-card{
+div#client-summary{
   color: white;
 }
 
 button{
   vertical-align: top;
-  color: rgb(255, 182, 24);
+  font-weight: bold;
+  color: rgb(5, 5, 112);
   padding: 8px;
   width: 100%;
 }
 
 .roster-button{
-  color: blue;
-  background-color: grey;
+  color: rgb(255, 182, 24);
+  background-color: rgb(170, 169, 169);
 }
 
 input{

@@ -1,4 +1,4 @@
-//adding two main buttons
+//adding two main buttons 
 function addClientButton(){
 const addNewClientButton = document.getElementById("add-client");
 addNewClientButton.addEventListener("click", newClientHandler);
@@ -11,8 +11,8 @@ const getRosterButton = document.createElement("button");
 getRosterButton.id = "roster-button"
 getRosterButton.textContent = "Get Roster";
 getRosterButton.addEventListener("click", showRoster);
-let div = document.getElementById("client-summary");
-rosterHolder.insertBefore(getRosterButton, div);
+const clientSummaryDiv = document.getElementById("client-summary");
+rosterHolder.insertBefore(getRosterButton, clientSummaryDiv);
 }
 getRosterButton();
 
@@ -59,11 +59,19 @@ function newClientHandler(){
   challengesInputLabel.for = "challenges";
   challengesInput.placeholder = "i.e. weak/tight hips, wants a bigger chest,lower back issues, underactive glutes, etc.";
 
-  let daysInput = document.createElement("input");
-  let daysInputLabel = document.createElement("label")
+  let daysInput = document.createElement("select");
+  let daysInputLabel = document.createElement("label");
+  const oneDay = document.createElement("option");
+  oneDay.textContent = "1 day a week";
+  const twoDay = document.createElement("option");
+  twoDay.textContent = "2 days a week";
+  const threeDay = document.createElement("option");
+  threeDay.textContent = "3 days a week";
+  daysInput.append(oneDay, twoDay, threeDay)
+
   daysInput.id = "days";
   daysInputLabel.for = "days";
-  daysInput.placeholder = "Days";
+  daysInput.placeholder = "Select Days Per Week";
   daysInputLabel.textContent = "How many days will this client work out?";
 
   let willWorkOutInput = document.createElement("select");
@@ -125,10 +133,8 @@ function newClientHandler(){
 
 function submitClient(e){
   const name = e.target[0].value
-  const rawHeight = e.target[1].value
-  const height = parseInt(rawHeight)
-  const rawWeight = e.target[2].value
-  const weight = parseInt(rawWeight)
+  const height = e.target[1].value
+  const weight = e.target[2].value
   const age = e.target[3].value
   const challengeGoals = e.target[4].value
   const daysPerWeek = e.target[5].value
@@ -142,7 +148,6 @@ function submitClient(e){
     },
     body:JSON.stringify({
       "name" : name,
-      //"id" : 4,
       "height" : height,
       "weight" : weight,
       "age" : age,
@@ -174,8 +179,8 @@ function showRoster(){
     .then(data => {const currentRoster = data;
       let rosterArray = Object.values(currentRoster);
       let rosterTd = document.getElementById("roster");
-      let rosterDiv = document.createElement("div");
-      rosterDiv.id = "roster-holder"
+      const rosterBox = document.getElementById("roster-box");
+     
       for (let client of rosterArray){
         let thisClient = document.createElement("button");
         thisClient.className = "roster-button"
@@ -183,10 +188,7 @@ function showRoster(){
         thisClient.id = client.id;
         thisClient.className = "roster-button"
         thisClient.addEventListener("click", clientSummary);
-        
-        
-        rosterTd.append(rosterDiv)
-        rosterDiv.append(thisClient)
+        rosterBox.append(thisClient)
 
       }
     });
@@ -195,12 +197,13 @@ function showRoster(){
 ///hiding the roster
 function hideRoster(e){
   e.target.remove();
-  const roster = document.getElementById("roster-holder");
-  roster.remove();
-  getRosterButton();
-  let clientSummary = document.getElementById("client-summary");
-  console.log(clientSummary)
+  const rosterBox = document.getElementById("roster-box");
+  rosterBox.innerHTML = "";
+  const clientSummary = document.getElementById("client-summary");
+  clientSummary.style.padding = "0px";
+  clientSummary.textContent = "";
 
+ getRosterButton();
 }
 
 //creating a summary of each client
@@ -216,17 +219,12 @@ function clientSummary(e){
     .then(response => response.json())
     .then(data => {const clientArray = data;
 
-    //remove previous client summary
     const client = clientArray.find(element => element.id === clientId);
-    const rosterHolder = document.getElementById("roster-holder");
-    // const summary = rosterHolder.getElementsByTagName("div");
-    // console.log(summary)
-    
     const name = client.name
     const age = client.age
     const height = client.height
     const weight = client.weight
-    const challenges = client.challenges
+    const challenges = removePunctuation(client.challenges)
     const days = client.days
     const equipment = client.equipment
     const willWorkOut = client.willWorkOut
@@ -237,17 +235,25 @@ function clientSummary(e){
       willWorkOutResp = `${name} will not work out on their own`
   
         } 
-    const roster = document.getElementById("roster");
-
-    const rosterBox = roster.getElementsByTagName("div");
-    const thisClientSummary = (rosterBox[0])
-    thisClientSummary.id = name;
-    thisClientSummary.className = "client-summary"
+    const rosterBox = document.getElementById("roster-box");
+    const thisClientSummary = document.getElementById("client-summary");
+    thisClientSummary.style.padding = "10px";
+    thisClientSummary.className = "client-summary";
     thisClientSummary.style.color = "blue";
     thisClientSummary.style.background = "white";
     thisClientSummary.textContent = "";
     thisClientSummary.textContent = `${name} is ${age} years old, ${height} feet, ${weight} lbs. Current goals and challenges are: ${challenges}. ${name} will plan to work out ${days} days a week, with access to ${equipment}. ${willWorkOutResp}.`;
-    
   
     })
+}
+
+const punctuation = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
+
+function removePunctuation(string) {
+  return string
+    .split('')
+    .filter(function(letter) {
+      return punctuation.indexOf(letter) === -1;
+    })
+    .join('');
 }

@@ -27,22 +27,11 @@
       "height": 6,
       "weight": 186,
       "age": "42",
-      "challenges": "Weak hips. ",
+      "challenges": "Weak hips.",
       "days": "4",
       "willWorkOut": "Yes",
       "equipment": "Full Gym",
       "id": 3
-    },
-    {
-      "name": "Brad",
-      "height": 6,
-      "weight": 178,
-      "age": "43",
-      "challenges": "Shoulder mobility issues.",
-      "days": "4",
-      "willWorkOut": "Yes",
-      "equipment": "Full Gym",
-      "id": 4
     },
     {
       "name": "Emily",
