@@ -1,8 +1,8 @@
-#HutchFit
+# HutchFit
 
 HutchFit is an application for a personal trainer to log new clients information and keep track of their roster. It accesses information from a local JSON file, creates a summary for a new client based on information entered into a form, displays a roster of current clients, and provides a summary of each client's current fitness journey. 
 
-##functionality
+## Functionality
 
 Currently, the application gives a personal trainer two options from the Home Page:
   1. Enter a new client. Takes in:

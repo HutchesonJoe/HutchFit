@@ -1,22 +1,23 @@
-//adding two main buttons 
+
 function addClientButton(){
-const addNewClientButton = document.getElementById("add-client");
-addNewClientButton.addEventListener("click", newClientHandler);
+  const addNewClientButton = document.getElementById("add-client");
+  addNewClientButton.addEventListener("click", newClientHandler);
 }
+
 addClientButton();
 
 function getRosterButton(){
-const rosterHolder = document.getElementById("roster")
-const getRosterButton = document.createElement("button");
-getRosterButton.id = "roster-button"
-getRosterButton.textContent = "Get Roster";
-getRosterButton.addEventListener("click", showRoster);
-const clientSummaryDiv = document.getElementById("client-summary");
-rosterHolder.insertBefore(getRosterButton, clientSummaryDiv);
+  const rosterHolder = document.getElementById("roster")
+  const getRosterButton = document.createElement("button");
+  getRosterButton.id = "roster-button"
+  getRosterButton.textContent = "Get Roster";
+  getRosterButton.addEventListener("click", showRoster);
+  const clientSummaryDiv = document.getElementById("client-summary");
+  rosterHolder.insertBefore(getRosterButton, clientSummaryDiv);
 }
+
 getRosterButton();
 
-//adding a new client to the roster
 function newClientHandler(){
   let button = document.getElementById("add-client");
   button.remove()
@@ -120,7 +121,7 @@ function newClientHandler(){
   newForm.append(willWorkOutInputLabel);
   newForm.append(willWorkOutInput);
   willWorkOutInput.append(willWorkOutYes);
-  willWorkOutInput.append(willWorkOutNo)
+  willWorkOutInput.append(willWorkOutNo);
   newForm.append(equipmentInputLabel);
   newForm.append(equipmentInput);
   equipmentInput.append(equipmentOptionChoice1);
@@ -128,8 +129,6 @@ function newClientHandler(){
   equipmentInput.append(equipmentOptionChoice3);
   newForm.append(submit)
 }
-
-//submiting the client
 
 function submitClient(e){
   const name = e.target[0].value
@@ -160,7 +159,6 @@ function submitClient(e){
     })
   }
 
-//showing roster of current clients
 function showRoster(){
   const roster = document.getElementById("roster-button");
   roster.removeEventListener("click", showRoster);
@@ -168,17 +166,10 @@ function showRoster(){
   roster.textContent = "";
   roster.textContent = "Hide Roster"
 
-  let getClients = fetch("http://localhost:3000/clients",{
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }
-  )
-    .then(response => {return response.json()})
-    .then(data => {const currentRoster = data;
-      let rosterArray = Object.values(currentRoster);
-      let rosterTd = document.getElementById("roster");
+ fetch("http://localhost:3000/clients")
+    .then(response => response.json())
+    .then(data => {
+      let rosterArray = data;
       const rosterBox = document.getElementById("roster-box");
      
       for (let client of rosterArray){
@@ -189,12 +180,13 @@ function showRoster(){
         thisClient.className = "roster-button"
         thisClient.addEventListener("click", clientSummary);
         rosterBox.append(thisClient)
-
       }
     });
   
-} 
-///hiding the roster
+    
+  }
+
+
 function hideRoster(e){
   e.target.remove();
   const rosterBox = document.getElementById("roster-box");
@@ -206,7 +198,7 @@ function hideRoster(e){
  getRosterButton();
 }
 
-//creating a summary of each client
+
 function clientSummary(e){
   const thisClient = e.target.textContent;
   let clientId = parseInt(e.target.id);
